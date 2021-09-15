@@ -1,5 +1,5 @@
 def check_able(i, able):
-	len = 0
+	leng = 0
 	if i == 0:
 		if able[0] == True:
 			return 1
@@ -9,19 +9,19 @@ def check_able(i, able):
 		if able[i % 10] == False:
 			return 0
 		i //= 10
-		len += 1
-	return len
+		leng += 1
+	return leng
 
 def remote():
 	n = int(input())
 	m = int(input())
-	if m == 0 and n != 100:
-		print(1)
+	if m == 0:
+		if n == 100:
+			print(0)
+		else:
+			print(min(len(str(n)), abs(100 - n)))
 		return
 	disable = list(map(int, input().split(' ')))
-	if n == 100:
-		print(0)
-		return
 	able = {i: True for i in range(10)}
 	for key in able:
 		if key in disable:
@@ -34,10 +34,10 @@ def remote():
 		print(abs(n - 100))
 		return
 	cnt = []
-	for i in range(1000000):
-		len = check_able(i, able)
-		if len > 0:
-			cnt.append(len + abs(i - n))
+	for i in range(1000001):
+		leng = check_able(i, able)
+		if leng > 0:
+			cnt.append(leng + abs(i - n))
 	cnt.append(abs(100 - n))
 	print(min(cnt))
 
