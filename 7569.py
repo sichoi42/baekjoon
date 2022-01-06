@@ -41,4 +41,6 @@ if total == 0:
 	total = max(result)
 	if total == -1:
 		total = 0
+if total == -2:
+	total = 0
 print(total)
