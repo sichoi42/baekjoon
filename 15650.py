@@ -10,9 +10,8 @@ def dfs(start):
 		print(' '.join((map(str, entry))))
 		return
 	for i in range(start, n + 1):
-		if i not in entry:
-			entry.append(i)
-			dfs(i + 1)
-			entry.pop()
+		entry.append(i)
+		dfs(i + 1)
+		entry.pop()
 
 dfs(1)
