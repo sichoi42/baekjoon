@@ -1,40 +1,50 @@
 from collections import deque
+import sys
 
-m, n = map(int, input().split(' '))
-box = [list(map(int, input().split(' '))) for _ in range(n)]
+input = sys.stdin.readline
 dr = [-1, 1, 0, 0]
 dc = [0, 0, -1, 1]
-queue = deque([])
-for i in range(n):
-	for j in range(m):
-		if box[i][j] == 1:
-			queue.append([i, j])
-			box[i][j] = -2
-day = 1
-while queue:
-	qsize = len(queue)
-	for _ in range(qsize):
+
+def bfs(visited, ripe_tomato):
+	queue = deque()
+	for tup in ripe_tomato:
+		queue.append(tup)
+	while queue:
 		r, c = queue.popleft()
 		for k in range(4):
 			nr = r + dr[k]
 			nc = c + dc[k]
-			if 0 <= nr < n and 0 <= nc < m:
-				if box[nr][nc] == 0:
-					queue.append([nr, nc])
-					box[nr][nc] = day
-	day += 1
-total = 0
-for line in box:
-	if 0 in line:
-		total = -1
-		break
-if total == 0:
-	result = []
-	for line in box:
-		result.append(max(line))
-	total = max(result)
-	if total == -1:
-		total = 0
-if total == -2:
-	total = 0
-print(total)
+			if 0 <= nr < n and 0 <= nc < m and visited[nr][nc] == 0:
+				queue.append((nr, nc))
+				visited[nr][nc] = visited[r][c] + 1
+	max = -1
+	for r in range(n):
+		row_max = -1
+		for c in range(m):
+			cur = visited[r][c]
+			if cur == 0:
+				return -1
+			elif cur > row_max:
+				row_max = cur
+		if row_max > max:
+			max = row_max
+	if max == -1:
+		return -1
+	else:
+		return max - 1
+
+if __name__ == '__main__':
+	m, n = map(int, input().split())
+	visited = [[0 for _ in range(m)] for _ in range(n)]
+	box = []
+	ripe_tomato = []
+	for r in range(n):
+		tmp = list(map(int, input().split()))
+		for c in range(m):
+			if tmp[c] == 1:
+				ripe_tomato.append((r, c))
+				visited[r][c] = 1
+			elif tmp[c] == -1:
+				visited[r][c] = -1
+		box.append(tmp)
+	print(bfs(visited, ripe_tomato))
