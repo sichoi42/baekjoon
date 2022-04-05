@@ -2,18 +2,16 @@ from collections import deque, defaultdict
 
 n, k = map(int, input().split(' '))
 queue = deque([n])
-visited = defaultdict(bool)
-cnt = 0
+visited = defaultdict(lambda: -1)
+visited[n] = 0
 while queue:
-	qsize = len(queue)
-	for _ in range(qsize):
-		cur = queue.popleft()
-		if visited[cur] == False and 0 <= cur <= 100000:
-			visited[cur] = True
-			queue.append(cur - 1)
-			queue.append(cur + 1)
-			queue.append(cur * 2)
-			if cur == k:
-				print(cnt)
-				exit(0)
-	cnt += 1
+	cur = queue.popleft()
+	if cur == k:
+		print(visited[cur])
+		break
+	if 0 <= cur <= 100000:
+		nexts = [cur - 1, cur + 1, cur * 2]
+		for next in nexts:
+			if visited[next] == -1:
+				queue.append(next)
+				visited[next] = visited[cur] + 1
