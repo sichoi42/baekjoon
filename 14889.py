@@ -25,6 +25,9 @@ def divide_team(depth):
 		global result
 		if diff < result:
 			result = diff
+			if result == 0:
+				print(0)
+				sys.exit(0)
 		return
 	for i in range(depth, n + 1):
 		entry.append(i)
